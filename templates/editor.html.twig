@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editor{% endblock %}
+{% block description %}Editor produktu.{% endblock %}
+{% block body %}
+    {# Formulář pro editaci. #}
+    {% form_theme form 'row.html.twig' %}
+    {{ form(form) }}
+{% endblock %}

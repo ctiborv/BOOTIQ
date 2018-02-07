@@ -1,0 +1,85 @@
+{# empty Twig template #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}My cool blog products{% endblock %}
+
+{% block body %}
+    <h2>Produkty</h2>
+    <table width="50%">
+        <tr>
+            <th width="30%" align="left">Název</th>
+            <th align="left">Cena</th>
+            <th align="left">Množství</th>
+            <th align="left">Akce</th>
+        </tr>
+    {% for product in products %}
+        <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.quantity }}</td>
+            <td>
+              <a href="{{ path('product_editor', {'id': product.id}) }}">Editovat</a> , 
+              {% if product.watchdog_activated == 0 %}
+                  <a href="{{ path('watchdog_activate', {'id': product.id}) }}">Zapnout watchdog</a> 
+              {% else %}
+                  <a href="{{ path('watchdog_deactivate', {'id': product.id}) }}">Vypnout watchdog</a> 
+              {% endif %}
+            </td>
+            
+        </tr>
+    {% endfor %}
+    </table>
+     <a href="{{ path('product_editor') }}">Nový</a>  
+
+     <h2>Watchdogs</h2>
+    <table>
+        <tr>
+            <th>id</th>
+            <th>ID produktu</th>
+            <th>Změněné pole</th>
+            <th>Původní hodnota</th>
+            <th>Nová hodnota</th>
+            <th>ID Pravidla</th>
+        </tr>
+    {% for watchdog in watchdogs %}
+        <tr>
+            <td>{{ watchdog.id }}</td>
+            <td>{{ watchdog.id_product }}</td>
+            <td>{{ watchdog.changed_column_name }}</td>
+            <td>{{ watchdog.old_value }}</td>
+            <td>{{ watchdog.new_value }}</td>
+            <td>{{ watchdog.id_rule }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    
+    
+     <h2>Watchdogs Rules</h2>
+    <table>
+        <tr>
+            <th>id</th>
+            <th>Změněné pole</th>
+            <th>Operace</th>
+            <th>Hodnota</th>
+        </tr>
+    {% for watchdogRule in watchdogsRules %}
+        <tr>
+            <td>{{ watchdogRule.id }}</td>
+            <td>{{ watchdogRule.changed_column_name }}</td>
+            <td>{{ watchdogRule.changed_column_operation }}</td>
+            <td>{{ watchdogRule.changed_column_value }}</td>
+        </tr>
+    {% endfor %}
+    </table>    
+     
+    <pre>
+     /**
+      * < znamená pokud je položka menší než changed_column_value
+      * - znamená zmenšení položky 
+      * Z znamená jakákoliv změna
+      * + znamená zvětšení položky
+      * > znamená pokud je položka větší než changed_column_value
+      * = znamená pokud je položka rovno changed_column_value
+    </pre>
+{% endblock %}
